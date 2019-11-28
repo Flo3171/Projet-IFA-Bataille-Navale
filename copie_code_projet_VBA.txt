@@ -1,48 +1,47 @@
-Dim carte_ennemie, carte_allie As Range
-Dim coll_cible, ligne_cible As Integer
-Dim tour As String
-Dim p_a_allie, p_a_ennemie, c_allie, c_ennemie, c_t_allie, c_t_ennemie, s_m_allie, s_m_ennemie, a_c_allie, a_c_ennemie As Range
+Dim carte_ennemi, carte_allie As Range
+Dim col_cible, ligne_cible, ligne, colonne As Integer
+Dim tour, p_a_ennemi_sens, c_ennemi_sens, c_t_ennemi_sens, s_m_ennemi_sens, a_c_ennemi_sens, bateau_sens As String
+Dim p_a_allie, p_a_ennemi, c_allie, c_ennemi, c_t_allie, c_t_ennemi, s_m_allie, s_m_ennemi, a_c_allie, a_c_ennemi, bateau As Range
 ' p_a = porte avions (5 cases)
 ' c = cuirassé (4 cases)
 ' c_t = contre torpillieur (3 cases)
 ' s_m = sous marin (3 cases)
 ' a_c = avion de chasse (2 cases)
 Dim alphabet As String
-    
+
 
 
 
 Sub lancer_partie()
 'Florian
-    
+
     'initialisation des plages de cellules des cartes énnemie et alliée
-    Set carte_ennemie = Range("U4:AD13")
+    Set carte_ennemi = Range("U4:AD13")
     Set carte_allie = Range("E4:N13")
     alphabet = "ABCDEFGHIJ"
-    
+
     def_range_bateau
-    
+
     'on met ou remmet la feuille de calcul pour etre prete à debuter une partie
     carte_allie.ClearContents
-    carte_ennemie.ClearContents
-    
+    carte_ennemi.ClearContents
+
     carte_allie.Interior.Color = RGB(51, 204, 255)
-    carte_ennemie.Interior.Color = RGB(51, 204, 255)
-    
+    carte_ennemi.Interior.Color = RGB(51, 204, 255)
+
     p_a_allie.Interior.Color = RGB(153, 153, 153)
     c_allie.Interior.Color = RGB(153, 153, 153)
     c_t_allie.Interior.Color = RGB(153, 153, 153)
     s_m_allie.Interior.Color = RGB(153, 153, 153)
     a_c_allie.Interior.Color = RGB(153, 153, 153)
-  
+
     MsgBox ("Explication pour l'utilisateur")
     'régiger un message pour expliquer a l'utilisateur les regle la manière de jouer
-    
+
     tour = "utilisateur"
     'la varriable tour vaut soit "utilisateur" lorsque c'est à l'utilisateur de jouer soit "ordinateur" lorsque c'est à l'utilasateur de jouer
     '--> !!! elle n'est initialisé que lorsque l'utilisateur lance une partie en cliquant sur la bouton donc tant que cette variable ne vaut pas "utilisateur" ou "ordinateur il ne doit rien ce passer sur VBA !
-    
-    
+
 
 End Sub
 
@@ -56,13 +55,13 @@ Sub def_range_bateau()
     Set c_t_allie = Range("L8:L10")
     Set s_m_allie = Range("J6:L6")
     Set a_c_allie = Range("E10:E11")
-    
+
     'initialisation des plages de cellules de chaque bateau ennemie
-    Set p_a_ennemie = Range("X7:X11")
-    Set c_ennemie = Range("AC7:AC10")
-    Set c_t_ennemie = Range("AB5:AD5")
-    Set s_m_ennemie = Range("Z4:Z6")
-    Set a_c_ennemie = Range("U4:V4")
+    Set p_a_ennemi = Range("X7:X11")
+    Set c_ennemi = Range("AC7:AC10")
+    Set c_t_ennemi = Range("AB5:AD5")
+    Set s_m_ennemi = Range("Z4:Z6")
+    Set a_c_ennemi = Range("U4:V4")
 
 
 End Sub
@@ -73,14 +72,116 @@ Sub tour_allie()
             'Call modifie_case("Cuirassé", "ordinateur", 6, 2)
 End Sub
 
-Sub tour_ennemie()
+Sub tour_ennemi()
 'ensemble des action qui on lieu apres le tours de l'utilisateur lorsque c'est le tout de l'ennemi
 
 End Sub
 
+Sub sens()
+'Renvoie le sens des bateaux ("H" horizontal et "V" vertical)
+'Arnaud
+'Paramètres: "tour" - tour du joueur ou de l'ordinateur
+'            "nombateau_ennemi" - Plage des bateaux concernés
+'Sortie: "bateau_sens" - "V" s'il est sur la verticale, "H" pour l'horizontale
+
+'Méthode: Compter le nombre de colonnes concernées par chaque bateau, s'il n'y en a qu'une, c'est qu'il est placé à la verticale, sinon à l'horizontale
+
+If tour = "utilisateur" Then
+
+    If p_a_ennemi.Columns.Count = 1 Then
+        p_a_ennemi_sens = "V"
+    Else
+        p_a_ennemi_sens = "H"
+    End If
+
+    If c_ennemi.Columns.Count = 1 Then
+        c_ennemi_sens = "V"
+    Else
+        c_ennemi_sens = "H"
+    End If
+
+    If c_t_ennemi.Columns.Count = 1 Then
+        c_t_ennemi_sens = "V"
+    Else
+        c_t_ennemi_sens = "H"
+    End If
+
+    If s_m_ennemi.Columns.Count = 1 Then
+        s_m_ennemi_sens = "V"
+    Else
+        s_m_ennemi_sens = "H"
+    End If
+
+    If a_c_ennemi.Columns.Count = 1 Then
+        s_m_ennemi_sens = "V"
+    Else
+        a_c_ennemi_sens = "H"
+    End If
+
+End If
+
+End Sub
+
+
 Sub test_touche()
 'fonction qui teste si la case ciblée par un des deux joureur correspond a celle q'un bateau ennemie si oui renvoi le nom de ce bateau si non renvois "non_touche"
 'Arnaud
+
+'paramètre: "bateau_ennemi" - Prendre la plage de chaque bateau, un par un
+'           "bateau_ennemi_sens" - Prendre le sens de chaque bateau, un par un
+'           "tour" - Vérifier qu'il s'agisse du tour du joueur ou de l'ordinateur
+'           "ligne_cible" - Ligne visée
+'           "col_cible" - Colonne visée
+'Sortie: donne les coordonnées si bateau touché
+'(Prérequis: avoir lancé la fonction sens au moins une fois avant)
+
+Dim i As Integer
+    Set bateau = p_a_ennemi
+    bateau_sens = p_a_ennemi_sens
+
+If tour = "utilisateur" Then
+
+    For i = 1 To 5
+
+        For j = 1 To bateau.Count
+
+'En fonction du sens, on vérifie la plage de chaque bateau à la verticale ou l'horizontale
+'On compare avec la case ciblée
+            If bateau_sens = "V" Then
+                If bateau.Cells(j, 1).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
+                    ligne = ligne_cible
+                    colonne = col_cible
+                    MsgBox "ligne: " & ligne
+                    MsgBox "colonne: " & colonne
+                End If
+            ElseIf bateau_sens = "H" Then
+                If bateau.Cells(1, j).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
+                    ligne = ligne_cible
+                    colonne = col_cible
+                    MsgBox "ligne: " & ligne
+                    MsgBox "colonne: " & colonne
+                End If
+            End If
+        Next j
+
+'On change de bateau à vérifier
+        If i = 4 Then
+            Set bateau = a_c_ennemi
+            bateau_sens = a_c_ennemi_sens
+        ElseIf i = 3 Then
+            Set bateau = s_m_ennemi
+            bateau_sens = s_m_ennemi_sens
+        ElseIf i = 2 Then
+            Set bateau = c_t_ennemi
+            bateau_sens = c_t_ennemi_sens
+        ElseIf i = 1 Then
+            Set bateau = c_ennemi
+            bateau_sens = c_ennemi_sens
+        End If
+
+    Next i
+
+End If
 
 End Sub
 
@@ -96,7 +197,7 @@ Sub test_gagne()
 
 End Sub
 
-Sub modifie_case(touche As String, tour As String, collone As Integer, ligne As Integer)
+Sub modifie_case(touche As String, tour As String, colonne As Integer, ligne As Integer)
 'Florian
 'modifie  les carratésitique de la case ciblé pour faire comprendre au joueur si il a touché un bateu énemie, si il n'a rien touché ou si un de ces bateau à été détruit
 
@@ -111,18 +212,18 @@ Sub modifie_case(touche As String, tour As String, collone As Integer, ligne As 
 
     If touche = "non_touche" Then
                                 If tour = "utilisateur" Then
-                                                            carte_ennemie.Cells(ligne, collone).Value = "X"
+                                                            carte_ennemi.Cells(ligne, colonne).Value = "X"
                                 ElseIf tour = "ordinateur" Then
-                                                            carte_allie.Cells(ligne, collone).Value = "X"
+                                                            carte_allie.Cells(ligne, colonne).Value = "X"
                                 End If
                             Else
                                 If tour = "utilisateur" Then
-                                                            carte_ennemie.Cells(ligne, collone).Interior.Color = RGB(235, 52, 52)
+                                                            carte_ennemi.Cells(ligne, colonne).Interior.Color = RGB(235, 52, 52)
                                 ElseIf tour = "ordinateur" Then
-                                                            carte_allie.Cells(ligne, collone).Interior.Color = RGB(235, 52, 52)
+                                                            carte_allie.Cells(ligne, colonne).Interior.Color = RGB(235, 52, 52)
                                 End If
     End If
-    
+
 End Sub
 
 Sub fin_partie()
@@ -130,7 +231,7 @@ Sub fin_partie()
 
 End Sub
 
-Sub message(touche As String, tour As String, collone As Integer, ligne As Integer)
+Sub message(touche As String, tour As String, colonne As Integer, ligne As Integer)
 'Florian
 'fontion qui affiche un message à l'utilisatuer en fonction du coup qu'il vien de jouer ou que l'ordinateur vien de jouer
 'parametre : "touche" --> Si le coup n'a rien touché mettre "non_touche"
@@ -140,28 +241,28 @@ Sub message(touche As String, tour As String, collone As Integer, ligne As Integ
 '            "ligne"  --> Numéro de la ligne dans la grille de jeu qui à été ciblé
 'sortie : affichage d'un MsgBox correspondant a la description du tour
     Dim contenu As String
-    Dim collone_alpha As String
+    Dim colonne_alpha As String
     'lettre correspondant a la collone dans le grille de jeu
-    collone_alpha = Mid(alphabet, collone, 1)
+    colonne_alpha = Mid(alphabet, colonne, 1)
     If touche = "non_touche" Then
                                 If tour = "utilisateur" Then
-                                                                contenu = collone_alpha & ligne & " aucun bateau énnemi touché..."
+                                                                contenu = colonne_alpha & ligne & " aucun bateau ennemi touché..."
                                 ElseIf tour = "ordinateur" Then
-                                                                contenu = collone_alpha & ligne & " aucun bateau allié touché !"
+                                                                contenu = colonne_alpha & ligne & " aucun bateau allié touché !"
                                 End If
                             Else
                                 If tour = "utilisateur" Then
-                                                                contenu = collone_alpha & ligne & " " & touche & " " & " énnemi touché !"
+                                                                contenu = colonne_alpha & ligne & " " & touche & " " & " ennemi touché !"
                                 ElseIf tour = "ordinateur" Then
-                                                                contenu = collone_alpha & ligne & " " & touche & " " & " alié touché..."
+                                                                contenu = colonne_alpha & ligne & " " & touche & " " & " allié touché..."
                                 End If
     End If
-    
-    
+
+
     Call MsgBox(contenu, , "Récapitulatif du tour")
     'MsgBox (touche & tour & collone & ligne)
-    
-        
+
+
 End Sub
 
 
@@ -171,17 +272,29 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
 'met les coordoné choisie dans deux variables "coll_cible" et "ligne_cible" et affiche a l'utilisateur la cible en I15 de manière lisible pour lui
 
     Dim i, j As Integer
-    
+
     If tour = "utilisateur" Then
         For i = 1 To 10
             For j = 1 To 10
-                If Target.Address = carte_ennemie.Cells(i, j).Address Then
-                    coll_cible = j
+                If Target.Address = carte_ennemi.Cells(i, j).Address Then
+                    col_cible = j
                     ligne_cible = i
                 End If
             Next j
         Next i
-        
-        Range("I15").Value = Mid(alphabet, coll_cible, 1) & " " & ligne_cible
+
+        Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
     End If
+End Sub
+
+
+Sub feu()
+
+'Sub provisoir lié au bouton feu pour tester la fonction test_touche
+
+If tour = "utilisateur" Then
+    sens
+    test_touche
+End If
+
 End Sub
