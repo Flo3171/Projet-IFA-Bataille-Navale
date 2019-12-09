@@ -73,12 +73,35 @@ End Sub
 
 Sub tour_allie()
 'ensemble des action qui on lieu lorsque durant sont tours l'utilisateur clique sur le bouton "Feu!"
-            'Call message("non_touche", "utilisateur", 6, 2)
-            'Call modifie_case("Cuirassé", "ordinateur", 6, 2)
+    Dim reponse As String
+    
+    If col_cible > 0 And col_cible <= 10 And ligne_cible > 0 And ligne_cible <= 10 Then
+        reponce = test_touche()
+        Call message(reponce, tour, col_cible, ligne_cible)
+        Call modifie_case(reponce, tour, col_cible, ligne_cible)
+        tour = "ordinateur"
+        Call tour_ennemi
+    Else
+        MsgBox ("Veuiller selectioner une cible valide")
+    End If
+    
 End Sub
 
 Sub tour_ennemi()
 'ensemble des action qui on lieu apres le tours de l'utilisateur lorsque c'est le tout de l'ennemi
+
+    Dim reponce As String
+    
+    
+    
+    Randomize
+    col_cible = Int(10 * Rnd) + 1
+    ligne_cible = Int(10 * Rnd) + 1
+    
+    reponce = test_touche()
+    Call message(reponce, tour, col_cible, ligne_cible)
+    Call modifie_case(reponce, tour, col_cible, ligne_cible)
+    tour = "utilisateur"
 
 End Sub
 
@@ -140,7 +163,7 @@ Next i
 End Sub
 
 
-Sub test_touche()
+Function test_touche() As String
 'fonction qui teste si la case ciblée par un des deux joureur correspond a celle q'un bateau ennemie si oui renvoi le nom de ce bateau si non renvois "non_touche"
 'Arnaud
 
@@ -154,113 +177,118 @@ Sub test_touche()
 'Sortie: donne les coordonnées si bateau touché
 '(Prérequis: avoir lancé la fonction sens au moins une fois avant)
 
-'Réinitialisation de la variable en début de test
-bateau_touche = False
+    'Réinitialisation de la variable en début de test
+    bateau_touche = False
+    test_touche = "non_touche"
 
-'Initialisation: premier bateau
-If tour = "utilisateur" Then
-    Set bateau = p_a_ennemi
-    bateau_sens = p_a_ennemi_sens
-    bateau_nom = "porte-avions ennemi"
-ElseIf tour = "ordinateur" Then
-    Set bateau = p_a_allie
-    bateau_sens = p_a_allie_sens
-    bateau_nom = "porte-avions allié"
-End If
-
-    For i = 1 To 5
-
-        For j = 1 To bateau.Count
-
-            If tour = "utilisateur" Then
-
-'En fonction du sens, on vérifie la plage de chaque bateau à la verticale ou l'horizontale
-'On compare avec la case ciblée
-                If bateau_sens = "V" Then
-                    If bateau.Cells(j, 1).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
-                        ligne = ligne_cible
-                        colonne = col_cible
-                        bateau_touche = True
-                        MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
-                    End If
-                ElseIf bateau_sens = "H" Then
-                    If bateau.Cells(1, j).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
-                        ligne = ligne_cible
-                        colonne = col_cible
-                        bateau_touche = True
-                        MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
-                    End If
-                End If
-            
-        ElseIf tour = "ordinateur" Then
+    'Initialisation: premier bateau
+    If tour = "utilisateur" Then
+        Set bateau = p_a_ennemi
+        bateau_sens = p_a_ennemi_sens
+        bateau_nom = "Porte-avions"
+    ElseIf tour = "ordinateur" Then
+        Set bateau = p_a_allie
+        bateau_sens = p_a_allie_sens
+        bateau_nom = "Porte-avions"
+    End If
     
-            If bateau_sens = "V" Then
-                    If bateau.Cells(j, 1).Address = carte_allie.Cells(ligne_ordi, col_ordi).Address Then
-                        ligne = ligne_ordi
-                        colonne = col_ordi
-                        bateau_touche = True
-                        MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
-                    End If
-                ElseIf bateau_sens = "H" Then
-                    If bateau.Cells(1, j).Address = carte_allie.Cells(ligne_ordi, col_ordi).Address Then
-                        ligne = ligne_ordi
-                        colonne = col_ordi
-                        bateau_touche = True
-                        MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
+        For i = 1 To 5
+    
+            For j = 1 To bateau.Count
+    
+                If tour = "utilisateur" Then
+    
+    'En fonction du sens, on vérifie la plage de chaque bateau à la verticale ou l'horizontale
+    'On compare avec la case ciblée
+                    If bateau_sens = "V" Then
+                        If bateau.Cells(j, 1).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
+                            ligne = ligne_cible
+                            colonne = col_cible
+                            bateau_touche = True
+                            'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
+                            test_touche = bateau_nom
+                        End If
+                    ElseIf bateau_sens = "H" Then
+                        If bateau.Cells(1, j).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
+                            ligne = ligne_cible
+                            colonne = col_cible
+                            bateau_touche = True
+                            'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
+                            test_touche = bateau_nom
+                        End If
                     End If
                 
+            ElseIf tour = "ordinateur" Then
+        
+                If bateau_sens = "V" Then
+                        If bateau.Cells(j, 1).Address = carte_allie.Cells(ligne_cible, col_cible).Address Then
+                            ligne = ligne_cible
+                            colonne = col_cible
+                            bateau_touche = True
+                            'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
+                            test_touche = bateau_nom
+                        End If
+                    ElseIf bateau_sens = "H" Then
+                        If bateau.Cells(1, j).Address = carte_allie.Cells(ligne_cible, col_cible).Address Then
+                            ligne = ligne_cible
+                            colonne = col_cible
+                            bateau_touche = True
+                            'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
+                            test_touche = bateau_nom
+                        End If
+                    
+                End If
+        
+            End If
+           
+            Next j
+    
+    'On change de bateau à vérifier en fonction du tour
+    
+            If tour = "utilisateur" Then
+                If i = 4 Then
+                    Set bateau = a_c_ennemi
+                    bateau_sens = a_c_ennemi_sens
+                    bateau_nom = "Avion de chasse"
+                ElseIf i = 3 Then
+                    Set bateau = s_m_ennemi
+                    bateau_sens = s_m_ennemi_sens
+                    bateau_nom = "Sous-marin"
+                ElseIf i = 2 Then
+                    Set bateau = c_t_ennemi
+                    bateau_sens = c_t_ennemi_sens
+                    bateau_nom = "Contre-torpilleur"
+                ElseIf i = 1 Then
+                    Set bateau = c_ennemi
+                    bateau_sens = c_ennemi_sens
+                    bateau_nom = "Cuirassé"
+                End If
+                
+            ElseIf tour = "ordinateur" Then
+                If i = 4 Then
+                    Set bateau = a_c_allie
+                    bateau_sens = a_c_allie_sens
+                    bateau_nom = "Avion de chasse"
+                ElseIf i = 3 Then
+                    Set bateau = s_m_allie
+                    bateau_sens = s_m_allie_sens
+                    bateau_nom = "Sous-marin"
+                ElseIf i = 2 Then
+                    Set bateau = c_t_allie
+                    bateau_sens = c_t_allie_sens
+                    bateau_nom = "Contre-torpilleur"
+                ElseIf i = 1 Then
+                    Set bateau = c_allie
+                    bateau_sens = c_allie_sens
+                    bateau_nom = "Cuirassé"
+                End If
+        
             End If
     
-        End If
-       
-        Next j
-
-'On change de bateau à vérifier en fonction du tour
-
-        If tour = "utilisateur" Then
-            If i = 4 Then
-                Set bateau = a_c_ennemi
-                bateau_sens = a_c_ennemi_sens
-                bateau_nom = "avion de chasse ennemi"
-            ElseIf i = 3 Then
-                Set bateau = s_m_ennemi
-                bateau_sens = s_m_ennemi_sens
-                bateau_nom = "sous-marin ennemi"
-            ElseIf i = 2 Then
-                Set bateau = c_t_ennemi
-                bateau_sens = c_t_ennemi_sens
-                bateau_nom = "contre-torpilleur ennemi"
-            ElseIf i = 1 Then
-                Set bateau = c_ennemi
-                bateau_sens = c_ennemi_sens
-                bateau_nom = "cuirassé ennemi"
-            End If
-            
-        ElseIf tour = "ordinateur" Then
-            If i = 4 Then
-                Set bateau = a_c_allie
-                bateau_sens = a_c_allie_sens
-                bateau_nom = "avion de chasse allié"
-            ElseIf i = 3 Then
-                Set bateau = s_m_allie
-                bateau_sens = s_m_allie_sens
-                bateau_nom = "sous-marin allié"
-            ElseIf i = 2 Then
-                Set bateau = c_t_allie
-                bateau_sens = c_t_allie_sens
-                bateau_nom = "contre-torpilleur allié"
-            ElseIf i = 1 Then
-                Set bateau = c_allie
-                bateau_sens = c_allie_sens
-                bateau_nom = "cuirassé allié"
-            End If
-    
-        End If
-
-    Next i
+        Next i
 
 
-End Sub
+End Function
 
 Sub test_detruit()
 'Jules
@@ -274,7 +302,7 @@ Sub test_gagne()
 
 End Sub
 
-Sub modifie_case(Touche As String, tour As String, colonne As Integer, ligne As Integer)
+Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integer, ByVal ligne As Integer)
 'Florian
 'modifie  les carratésitique de la case ciblé pour faire comprendre au joueur si il a touché un bateu énemie, si il n'a rien touché ou si un de ces bateau à été détruit
 
@@ -308,7 +336,7 @@ Sub fin_partie()
 
 End Sub
 
-Sub message(Touche As String, tour As String, colonne As Integer, ligne As Integer)
+Sub message(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integer, ByVal ligne As Integer)
 'Florian
 'fontion qui affiche un message à l'utilisatuer en fonction du coup qu'il vien de jouer ou que l'ordinateur vien de jouer
 'parametre : "touche" --> Si le coup n'a rien touché mettre "non_touche"
@@ -374,3 +402,4 @@ If tour = "utilisateur" Then
 End If
 
 End Sub
+
