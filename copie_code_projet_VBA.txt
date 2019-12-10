@@ -200,44 +200,25 @@ Function test_touche() As String
     
     'En fonction du sens, on vérifie la plage de chaque bateau à la verticale ou l'horizontale
     'On compare avec la case ciblée
-                    If bateau_sens = "V" Then
-                        If bateau.Cells(j, 1).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
+
+                        If bateau.Cells(j).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
                             ligne = ligne_cible
                             colonne = col_cible
                             bateau_touche = True
                             'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
                             test_touche = bateau_nom
                         End If
-                    ElseIf bateau_sens = "H" Then
-                        If bateau.Cells(1, j).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
-                            ligne = ligne_cible
-                            colonne = col_cible
-                            bateau_touche = True
-                            'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
-                            test_touche = bateau_nom
-                        End If
-                    End If
+
                 
             ElseIf tour = "ordinateur" Then
         
-                If bateau_sens = "V" Then
-                        If bateau.Cells(j, 1).Address = carte_allie.Cells(ligne_cible, col_cible).Address Then
+                        If bateau.Cells(j).Address = carte_allie.Cells(ligne_cible, col_cible).Address Then
                             ligne = ligne_cible
                             colonne = col_cible
                             bateau_touche = True
                             'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
                             test_touche = bateau_nom
                         End If
-                    ElseIf bateau_sens = "H" Then
-                        If bateau.Cells(1, j).Address = carte_allie.Cells(ligne_cible, col_cible).Address Then
-                            ligne = ligne_cible
-                            colonne = col_cible
-                            bateau_touche = True
-                            'MsgBox bateau_nom & " : ligne: " & ligne & "colonne: " & colonne
-                            test_touche = bateau_nom
-                        End If
-                    
-                End If
         
             End If
            
@@ -393,13 +374,5 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
 End Sub
 
 
-Sub feu()
 
-'Sub provisoir lié au bouton feu pour tester la fonction test_touche
-
-If tour = "utilisateur" Then
-    test_touche
-End If
-
-End Sub
 
