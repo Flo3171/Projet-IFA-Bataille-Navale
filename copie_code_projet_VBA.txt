@@ -291,7 +291,7 @@ For i = 1 To a_c_ennemi.Count
 Next i
 
 If j = a_c_ennemi.Count Then
-    MsgBox ("Avion de chasse détruit")
+    MsgBox ("Avion de chasse ennemi détruit")
 End If
 
 j = 0
@@ -309,7 +309,7 @@ For i = 1 To p_a_ennemi.Count
 Next i
 
 If j = p_a_ennemi.Count Then
-    MsgBox ("Porte-avion détruit")
+    MsgBox ("Porte-avions ennemi détruit")
 End If
 
 j = 0
@@ -327,7 +327,7 @@ For i = 1 To c_t_ennemi.Count
 Next i
 
 If j = c_t_ennemi.Count Then
-    MsgBox ("Contre-torpilleur détruit")
+    MsgBox ("Contre-torpilleur ennemi détruit")
 End If
 
 j = 0
@@ -345,7 +345,7 @@ For i = 1 To s_m_ennemi.Count
 Next i
 
 If j = s_m_ennemi.Count Then
-    MsgBox ("Sous-marin détruit")
+    MsgBox ("Sous-marin ennemi détruit")
 End If
 
 j = 0
@@ -363,7 +363,7 @@ For i = 1 To c_ennemi.Count
 Next i
 
 If j = c_ennemi.Count Then
-    MsgBox ("Cuirassé détruit")
+    MsgBox ("Cuirassé ennemi détruit")
 End If
 
 
