@@ -225,8 +225,8 @@ Function test_touche() As String
             Next j
     
     'On change de bateau à vérifier en fonction du tour
-    
-             If tour = "utilisateur" Then
+          
+          If tour = "utilisateur" Then
             If i = 4 Then
                 Set bateau = a_c_ennemi
                 bateau_sens = a_c_ennemi_sens
@@ -274,6 +274,8 @@ End Sub
 Sub test_detruit()
 'Jules
 'lorsque un bateau est touché test si ce bateau est détruit
+
+If tour = "utilisateur" Then
 
 Dim j As Integer
 j = 0
@@ -365,6 +367,159 @@ Next i
 If j = c_ennemi.Count Then
     MsgBox ("Cuirassé ennemi détruit")
 End If
+
+j = 0
+
+ElseIf tour = "ordinateur" Then
+
+For i = 1 To a_c_allie.Count
+
+   If a_c_allie_sens = "V" Then
+
+       If a_c_allie.Cells(i, 1).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    ElseIf a_c_allie_sens = "H" Then
+
+        If a_c_allie.Cells(1, i).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    End If
+
+Next i
+
+If j = a_c_allie.Count Then
+
+    MsgBox ("Avion de chasse allié détruit")
+
+End If
+
+j = 0
+
+For i = 1 To p_a_allie.Count
+
+   If p_a_allie_sens = "V" Then
+
+       If p_a_allie.Cells(i, 1).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    ElseIf p_a_allie_sens = "H" Then
+
+        If p_a_allie.Cells(1, i).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    End If
+
+Next i
+
+If j = p_a_allie.Count Then
+
+    MsgBox ("Porte-avions allié détruit")
+
+End If
+
+j = 0
+
+For i = 1 To c_t_allie.Count
+
+   If c_t_allie_sens = "V" Then
+
+       If c_t_allie.Cells(i, 1).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    ElseIf c_t_allie_sens = "H" Then
+
+        If c_t_allie.Cells(1, i).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    End If
+
+Next i
+
+If j = c_t_allie.Count Then
+
+    MsgBox ("Contre-torpilleur allié détruit")
+
+End If
+
+j = 0
+
+For i = 1 To s_m_allie.Count
+
+   If s_m_allie_sens = "V" Then
+
+       If s_m_allie.Cells(i, 1).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    ElseIf s_m_allie_sens = "H" Then
+
+        If s_m_allie.Cells(1, i).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    End If
+
+Next i
+
+If j = s_m_allie.Count Then
+
+    MsgBox ("Sous-marin allié détruit")
+
+End If
+
+j = 0
+
+For i = 1 To c_allie.Count
+
+   If c_allie_sens = "V" Then
+
+       If c_allie.Cells(i, 1).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    ElseIf c_allie_sens = "H" Then
+
+        If c_allie.Cells(1, i).Value = " " Then
+
+            j = j + 1
+
+        End If
+
+    End If
+
+Next i
+
+If j = c_allie.Count Then
+
+    MsgBox ("Cuirassé allié détruit")
+
+End If
+End if
 
 
 End Sub
