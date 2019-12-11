@@ -542,8 +542,10 @@ Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As 
                             Else
                                 If tour = "utilisateur" Then
                                                             carte_ennemi.Cells(ligne, colonne).Interior.Color = RGB(235, 52, 52)
+							    carte_ennemi.Cells(ligne, colonne).Value = " "
                                 ElseIf tour = "ordinateur" Then
                                                             carte_allie.Cells(ligne, colonne).Interior.Color = RGB(235, 52, 52)
+							    carte_allie.Cells(ligne, colonne).Value = " "
                                 End If
     End If
 
