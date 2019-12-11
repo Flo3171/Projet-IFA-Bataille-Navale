@@ -1,4 +1,4 @@
-Dim carte_ennemi, carte_allie As Range
+﻿Dim carte_ennemi, carte_allie As Range
 Dim col_cible, ligne_cible, col_ordi, ligne_ordi, ligne, colonne As Integer
 Dim tour, p_a_ennemi_sens, c_ennemi_sens, c_t_ennemi_sens, s_m_ennemi_sens, a_c_ennemi_sens, p_a_allie_sens, c_allie_sens, c_t_allie_sens, s_m_allie_sens, a_c_allie_sens, bateau_sens, bateau_nom As String
 Dim p_a_allie, p_a_ennemi, c_allie, c_ennemi, c_t_allie, c_t_ennemi, s_m_allie, s_m_ennemi, a_c_allie, a_c_ennemi, bateau As Range
@@ -269,7 +269,7 @@ Function test_touche() As String
     Next i
 
 test_detruit
-End Sub
+End Function
 
 Sub test_detruit()
 'Jules
@@ -489,8 +489,36 @@ End Sub
 Sub test_gagne()
 'Omar
 'lorsque un bateau est détuit teste qui tout les autres sont détruit au quelle cas le joureurs gagne
+Dim comptage_allier As Range
+Dim touche_test As Range
+Dim nombre_allier As Integer
+Dim nombre_ennemie As Integer
+Dim comptage_ennemie As Range
 
+    If tour = "utilisateur" Then
+                             Set touche_test = carte_ennemi.Cells(ligne_cible, col_cible).Address
+                              Set comptage_allier = Range("IV1")
+                                If bateau_touche = True Then
+                                                          Set comptage_allier = Union(comptage_allier, touche_test)
+                                                          nombre_allier = comptage_allier.Cells.Count
+                                 End If
+             If nombre_allier = 18 Then
+                             MsgBox ("vous avez gagné!")
+            End If
+     
+                    ElseIf tour = "ordinateur" Then
+                                                 Set touche_test = carte_allie.Cells(ligne_cible, col_cible).Address
+                                                 Set comptage_ennemie = Range("IB2")
+                                                 If bateau_touche = True Then
+                                                                           Set comptage_ennemie = Union(comptage_ennemie, touche_test)
+                                                                            nombre_ennemie = comptage_ennemie.Cells.Count
+                                                 End If
+                         If nombre_ennemie = 18 Then
+                                            MsgBox ("vous avez perdu")
+                          End If
+       End If
 End Sub
+
 
 Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integer, ByVal ligne As Integer)
 'Florian
@@ -581,6 +609,7 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
     End If
 End Sub
+
 
 
 
