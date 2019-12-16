@@ -42,7 +42,7 @@ Sub lancer_partie()
     sens
     'Appel de la fonction pour connaitre le sens des bateaux
 
-    MsgBox ("Sélectionner à l'aide de votre souris une case dans la carte ennemie, une fois cela fait à vos canons! Tirer en appuyant sur le bouton feu, si vous faites mouche vous en serait alors avertie par un message indiquant le bateau touché.")
+    MsgBox ("Explication pour l'utilisateur")
     'régiger un message pour expliquer a l'utilisateur les regle la manière de jouer
 
     tour = "utilisateur"
@@ -493,33 +493,35 @@ End Sub
 
 Sub test_gagne()
 'Omar
-'
- Dim Nb_ennemi As Integer
- Dim Nb_allier As Integer
- 
+'lorsque un bateau est détuit teste qui tout les autres sont détruit au quelle cas le joureurs gagne
+Dim comptage_allier As Range
+Dim touche_test As Range
+Dim nombre_allier As Integer
+Dim nombre_ennemie As Integer
+Dim comptage_ennemie As Range
+
     If tour = "utilisateur" Then
-        For i = 1 To 10
-            For j = 1 To 10
-                If carte_ennemi.Cells(i, j).Value = " " Then
-                                                        Nb_ennemi = Nb_ennemi + 1
-                End If
-            Next j
-        Next i
-                    If Nb_ennemi = 17 Then
-                                        MsgBox ("Vous avez gagné!")
-    ElseIf tour = "ordinateur" Then
-        For i = 1 To 10
-            For j = 1 To 10
-                If carte_allie.Cells(i, j).Value = " " Then
-                                                        Nb_allier = Nb_allier + 1
-                End If
-            Next j
-        Next i
-                    If Nb_allier = 17 Then
-                                        MsgBox ("Vous avez perdu")
-        
-                    
-    End If
+                             Set touche_test = carte_ennemi.Cells(ligne_cible, col_cible).Address
+                              Set comptage_allier = Range("IV1")
+                                If bateau_touche = True Then
+                                                          Set comptage_allier = Union(comptage_allier, touche_test)
+                                                          nombre_allier = comptage_allier.Cells.Count
+                                 End If
+             If nombre_allier = 18 Then
+                             MsgBox ("vous avez gagné!")
+            End If
+     
+                    ElseIf tour = "ordinateur" Then
+                                                 Set touche_test = carte_allie.Cells(ligne_cible, col_cible).Address
+                                                 Set comptage_ennemie = Range("IB2")
+                                                 If bateau_touche = True Then
+                                                                           Set comptage_ennemie = Union(comptage_ennemie, touche_test)
+                                                                            nombre_ennemie = comptage_ennemie.Cells.Count
+                                                 End If
+                         If nombre_ennemie = 18 Then
+                                            MsgBox ("vous avez perdu")
+                          End If
+       End If
 End Sub
 
 
@@ -614,7 +616,6 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
     End If
 End Sub
-
 
 
 
