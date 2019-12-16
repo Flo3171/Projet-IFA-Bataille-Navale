@@ -493,35 +493,33 @@ End Sub
 
 Sub test_gagne()
 'Omar
-'lorsque un bateau est détuit teste qui tout les autres sont détruit au quelle cas le joureurs gagne
-Dim comptage_allier As Range
-Dim touche_test As Range
-Dim nombre_allier As Integer
-Dim nombre_ennemie As Integer
-Dim comptage_ennemie As Range
-
+'
+ Dim Nb_ennemi As Integer
+ Dim Nb_allier As Integer
+ 
     If tour = "utilisateur" Then
-                             Set touche_test = carte_ennemi.Cells(ligne_cible, col_cible).Address
-                              Set comptage_allier = Range("IV1")
-                                If bateau_touche = True Then
-                                                          Set comptage_allier = Union(comptage_allier, touche_test)
-                                                          nombre_allier = comptage_allier.Cells.Count
-                                 End If
-             If nombre_allier = 18 Then
-                             MsgBox ("vous avez gagné!")
-            End If
-     
-                    ElseIf tour = "ordinateur" Then
-                                                 Set touche_test = carte_allie.Cells(ligne_cible, col_cible).Address
-                                                 Set comptage_ennemie = Range("IB2")
-                                                 If bateau_touche = True Then
-                                                                           Set comptage_ennemie = Union(comptage_ennemie, touche_test)
-                                                                            nombre_ennemie = comptage_ennemie.Cells.Count
-                                                 End If
-                         If nombre_ennemie = 18 Then
-                                            MsgBox ("vous avez perdu")
-                          End If
-       End If
+        For i = 1 To 10
+            For j = 1 To 10
+                If carte_ennemi.Cells(i, j).Value = " " Then
+                                                        Nb_ennemi = Nb_ennemi + 1
+                End If
+            Next j
+        Next i
+                    If Nb_ennemi = 17 Then
+                                        MsgBox ("Vous avez gagné!")
+    ElseIf tour = "ordinateur" Then
+        For i = 1 To 10
+            For j = 1 To 10
+                If carte_allie.Cells(i, j).Value = " " Then
+                                                        Nb_allier = Nb_allier + 1
+                End If
+            Next j
+        Next i
+                    If Nb_allier = 17 Then
+                                        MsgBox ("Vous avez perdu")
+        
+                    
+    End If
 End Sub
 
 
@@ -616,6 +614,7 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
     End If
 End Sub
+
 
 
 
