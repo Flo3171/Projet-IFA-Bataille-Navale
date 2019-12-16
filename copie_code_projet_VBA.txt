@@ -42,7 +42,7 @@ Sub lancer_partie()
     sens
     'Appel de la fonction pour connaitre le sens des bateaux
 
-    MsgBox ("Explication pour l'utilisateur")
+    MsgBox ("Sélectionner à l'aide de votre souris une case dans la carte ennemie, une fois cela fait à vos canons! Tirer en appuyant sur le bouton feu, si vous faites mouche vous en serait alors avertie par un message indiquant le bateau touché.")
     'régiger un message pour expliquer a l'utilisateur les regle la manière de jouer
 
     tour = "utilisateur"
