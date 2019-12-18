@@ -12,6 +12,7 @@ Dim bateau_touche, bateau_deja_affiche As Boolean
 Dim gagner As Boolean
 Dim perdu As Boolean
 Dim reponse As String
+Dim nb_tour_allier As Integer
 
 
 
@@ -67,10 +68,10 @@ Sub lancer_partie()
     If bateau_deja_affiche = True Then
         supprime_sprite_allie
     End If
-    
+    nombre_sprites = 0
     aff_bateau
     
-    nombre_sprites = 0
+    
 
    MsgBox ("Sélectionner à l'aide de votre souris une case dans la carte ennemie, une fois cela fait à vos canons! Tirer en appuyant sur le bouton feu, si vous faites mouche vous en serez alors avertie par un message indiquant le bateau touché. Puis se sera au tour de votre adversaire de jouer et de tenter de toucher un de vos bateau.")
     'régiger un message pour expliquer a l'utilisateur les regle la manière de jouer
@@ -145,6 +146,7 @@ Sub tour_allie()
         Call test_gagne
         tour = "ordinateur"
         Call tour_ennemi
+        nb_tour_allier = nb_tour_allier + 1
     Else
         MsgBox ("Veuillez sélectionner une case valide")
     
@@ -363,6 +365,18 @@ Sub test_detruit()
                      
             If j = a_c_ennemi.Count Then
                 MsgBox ("Avion de chasse ennemi détruit")
+                
+                With a_c_ennemi.Interior
+                    .Pattern = xlNone
+                    .TintAndShade = 0
+                    .PatternTintAndShade = 0
+                End With
+            
+                Call affiche_sprite_ennemie(1, 1, "Case_gauche_d")
+                Call affiche_sprite_ennemie(2, 1, "Case_droite_d")
+                
+                
+                
             End If
         End If
         
@@ -383,6 +397,17 @@ Sub test_detruit()
                     
             If j = p_a_ennemi.Count Then
                 MsgBox ("Porte-avions ennemi détruit")
+                With p_a_ennemi.Interior
+                    .Pattern = xlNone
+                    .TintAndShade = 0
+                    .PatternTintAndShade = 0
+                End With
+            
+                Call affiche_sprite_ennemie(4, 4, "Case_haut_d")
+                Call affiche_sprite_ennemie(4, 5, "Case_V_d")
+                Call affiche_sprite_ennemie(4, 6, "Case_V_d")
+                Call affiche_sprite_ennemie(4, 7, "Case_V_d")
+                Call affiche_sprite_ennemie(4, 8, "Case_bas_d")
             End If
         End If
         
@@ -403,6 +428,16 @@ Sub test_detruit()
                         
             If j = c_t_ennemi.Count Then
                 MsgBox ("Contre-torpilleur ennemi détruit")
+                With c_t_ennemi.Interior
+                    .Pattern = xlNone
+                    .TintAndShade = 0
+                    .PatternTintAndShade = 0
+                End With
+            
+                Call affiche_sprite_ennemie(8, 2, "Case_gauche_d")
+                Call affiche_sprite_ennemie(9, 2, "Case_H_d")
+                Call affiche_sprite_ennemie(10, 2, "Case_droite_d")
+                
             End If
         End If
         
@@ -423,6 +458,15 @@ Sub test_detruit()
                         
             If j = s_m_ennemi.Count Then
                 MsgBox ("Sous-marin ennemi détruit")
+                With s_m_ennemi.Interior
+                    .Pattern = xlNone
+                    .TintAndShade = 0
+                    .PatternTintAndShade = 0
+                End With
+            
+                Call affiche_sprite_ennemie(6, 1, "Case_haut_d")
+                Call affiche_sprite_ennemie(6, 2, "Case_V_d")
+                Call affiche_sprite_ennemie(6, 3, "Case_bas_d")
             End If
         End If
         
@@ -444,6 +488,16 @@ Sub test_detruit()
                         
             If j = c_ennemi.Count Then
                 MsgBox ("Cuirassé ennemi détruit")
+                With c_ennemi.Interior
+                    .Pattern = xlNone
+                    .TintAndShade = 0
+                    .PatternTintAndShade = 0
+                End With
+            
+                Call affiche_sprite_ennemie(9, 4, "Case_haut_d")
+                Call affiche_sprite_ennemie(9, 5, "Case_V_d")
+                Call affiche_sprite_ennemie(9, 6, "Case_V_d")
+                Call affiche_sprite_ennemie(9, 7, "Case_bas_d")
             End If
         End If
         j = 0
@@ -606,11 +660,11 @@ Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As 
 
     If Touche = "non_touche" Then
                                 If tour = "utilisateur" Then
-                                                            carte_ennemi.Cells(ligne, colonne).Value = "X"
-                                                            'Call affiche_sprite_ennemie(colonne, ligne, "Case_touchée")
+                                                            'carte_ennemi.Cells(ligne, colonne).Value = "X"
+                                                            Call affiche_sprite_ennemie(colonne, ligne, "Case_touchée")
                                 ElseIf tour = "ordinateur" Then
-                                                            carte_allie.Cells(ligne, colonne).Value = "X"
-                                                            'Call affiche_sprite_allie(colonne, ligne, "Case_touchée")
+                                                            'carte_allie.Cells(ligne, colonne).Value = "X"
+                                                            Call affiche_sprite_allie(colonne, ligne, "Case_touchée")
                                 End If
                             Else
                                 If tour = "utilisateur" Then
@@ -691,7 +745,7 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         Next i
         
         
-        If IsNumeric(col_cible) And IsNumeric(ligne_cible) Then
+        If IsNumeric(col_cible) And IsNumeric(ligne_cible) And col_clible <= 10 And col_cible > 0 Then
             Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
         End If
     End If
@@ -705,8 +759,10 @@ Sub affiche_sprite_ennemie(ByVal colonne As Integer, ByVal ligne As Integer, ByV
     Selection.Copy
     carte_ennemi.Cells(ligne, colonne).Select
     ActiveSheet.Paste
+    Selection.ShapeRange.Name = "partie_carte_allie"
     Selection.ShapeRange.ZOrder msoSendToBack
     Range("A1").Select
+    nombre_sprites = nombre_sprites + 1
 
 
 End Sub
@@ -722,13 +778,14 @@ Sub affiche_sprite_allie(ByVal colonne As Integer, ByVal ligne As Integer, ByVal
     Selection.ShapeRange.Name = "partie_carte_allie"
     Selection.ShapeRange.ZOrder msoSendToBack
     Range("A1").Select
+    nombre_sprites = nombre_sprites + 1
 
 
 End Sub
 
 Sub supprime_sprite_allie()
 
-For i = 1 To (17 + nombre_sprites)
+For i = 1 To (nombre_sprites)
 
     ActiveSheet.Shapes.Range(Array("partie_carte_allie")).Select
     Selection.Delete
@@ -738,6 +795,7 @@ Next i
 bateau_deja_affiche = False
 
 End Sub
+
 
 
 
