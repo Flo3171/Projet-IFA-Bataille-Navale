@@ -585,19 +585,19 @@ Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As 
 
     If Touche = "non_touche" Then
                                 If tour = "utilisateur" Then
-                                                            'carte_ennemi.Cells(ligne, colonne).Value = "X"
-                                                            Call affiche_sprite_ennemie(colonne, ligne, "Case_touchée")
+                                                            carte_ennemi.Cells(ligne, colonne).Value = "X"
+                                                            'Call affiche_sprite_ennemie(colonne, ligne, "Case_touchée")
                                 ElseIf tour = "ordinateur" Then
-                                                            'carte_allie.Cells(ligne, colonne).Value = "X"
-                                                            Call affiche_sprite_allie(colonne, ligne, "Case_touchée")
+                                                            carte_allie.Cells(ligne, colonne).Value = "X"
+                                                            'Call affiche_sprite_allie(colonne, ligne, "Case_touchée")
                                 End If
                             Else
                                 If tour = "utilisateur" Then
                                                             carte_ennemi.Cells(ligne, colonne).Interior.Color = RGB(235, 52, 52)
-                                carte_ennemi.Cells(ligne, colonne).Value = " "
+                                                            carte_ennemi.Cells(ligne, colonne).Value = " "
                                 ElseIf tour = "ordinateur" Then
                                                             carte_allie.Cells(ligne, colonne).Interior.Color = RGB(235, 52, 52)
-                                carte_allie.Cells(ligne, colonne).Value = " "
+                                                            carte_allie.Cells(ligne, colonne).Value = " "
                                 End If
     End If
 
@@ -659,8 +659,11 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
                 End If
             Next j
         Next i
-
-        Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
+        
+        
+        If IsNumeric(col_cible) And IsNumeric(ligne_cible) Then
+            Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
+        End If
     End If
 End Sub
 
