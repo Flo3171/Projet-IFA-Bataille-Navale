@@ -1,4 +1,4 @@
-﻿Dim carte_ennemi, carte_allie As Range
+Dim carte_ennemi, carte_allie As Range
 Dim col_cible, ligne_cible, col_ordi, ligne_ordi, ligne, colonne As Integer
 Dim tour, p_a_ennemi_sens, c_ennemi_sens, c_t_ennemi_sens, s_m_ennemi_sens, a_c_ennemi_sens, p_a_allie_sens, c_allie_sens, c_t_allie_sens, s_m_allie_sens, a_c_allie_sens, bateau_sens, bateau_nom As String
 Dim p_a_allie, p_a_ennemi, c_allie, c_ennemi, c_t_allie, c_t_ennemi, s_m_allie, s_m_ennemi, a_c_allie, a_c_ennemi, bateau As Range
@@ -19,14 +19,14 @@ Dim reponse As String
 Sub lancer_partie()
 'Florian
 
-    'initialisation des plages de cellules des cartes énnemie et alliée
+    'initialisation des plages de cellules des cartes : ennemie et alliée
     Set carte_ennemi = Range("U4:AD13")
     Set carte_allie = Range("E4:N13")
     alphabet = "ABCDEFGHIJ"
 
     def_range_bateau
 
-    'on met ou remmet la feuille de calcul pour etre prete à debuter une partie
+    'on met ou remet la feuille de calcul pour être prê à débuter une partie
     carte_allie.ClearContents
     carte_ennemi.ClearContents
     
@@ -54,23 +54,23 @@ Sub lancer_partie()
     
     
     sens
-    'Appel de la fonction pour connaitre le sens des bateaux
+    'Appel de la fonction pour connaître le sens des bateaux
     
     aff_bateau
 
    MsgBox ("Sélectionner à l'aide de votre souris une case dans la carte ennemie, une fois cela fait à vos canons! Tirer en appuyant sur le bouton feu, si vous faites mouche vous en serez alors avertie par un message indiquant le bateau touché. Puis se sera au tour de votre adversaire de jouer et de tenter de toucher un de vos bateau.")
-    'régiger un message pour expliquer a l'utilisateur les regle la manière de jouer
+    'Rédiger un message pour expliquer a l'utilisateur les règles lainsi que la manière de jouer
 
     tour = "utilisateur"
-    'la varriable tour vaut soit "utilisateur" lorsque c'est à l'utilisateur de jouer soit "ordinateur" lorsque c'est à l'utilasateur de jouer
-    '--> !!! elle n'est initialisé que lorsque l'utilisateur lance une partie en cliquant sur la bouton donc tant que cette variable ne vaut pas "utilisateur" ou "ordinateur il ne doit rien ce passer sur VBA !
+    'la variable tour vaut soit "utilisateur" lorsque c'est à l'utilisateur de jouer soit "ordinateur" lorsque c'est à l'IA de jouer
+    '--> !!! elle n'est initialisé que lorsque l'utilisateur lance une partie en cliquant sur la bouton donc tant que cette variable ne vaut pas "utilisateur" ou "ordinateur" il ne doit rien se passer sur VBA !
 
 
 End Sub
 
 Sub def_range_bateau()
 'Florian
-'place dans différentes range les positions de chaques bateaux sur la feuille de travail
+'place dans différentes ranges les positions de chaque bateau sur la feuille de travail
 
     'initialisation des plages de cellules de chaque bateau allie
     Set p_a_allie = Range("G12:K12")
@@ -79,7 +79,7 @@ Sub def_range_bateau()
     Set s_m_allie = Range("J6:L6")
     Set a_c_allie = Range("E10:E11")
 
-    'initialisation des plages de cellules de chaque bateau ennemie
+    'initialisation des plages de cellules de chaque bateau ennemi
     Set p_a_ennemi = Range("X7:X11")
     Set c_ennemi = Range("AC7:AC10")
     Set c_t_ennemi = Range("AB5:AD5")
@@ -91,7 +91,7 @@ End Sub
 
 Sub aff_bateau()
 'Florian
-'affiche les sprite des bateau lors de l'initialisation
+'affiche les sprites des bateaux lors de l'initialisation
     
     Call affiche_sprite_allie(3, 9, "Case_gauche")
     Call affiche_sprite_allie(4, 9, "Case_H")
@@ -118,7 +118,7 @@ Sub aff_bateau()
 End Sub
 
 Sub tour_allie()
-'ensemble des action qui on lieu lorsque durant sont tours l'utilisateur clique sur le bouton "Feu!"
+'ensemble des actions qui ont lieu lorsque durant son tour, l'utilisateur clique sur le bouton "Feu !"
     
     
     If col_cible > 0 And col_cible <= 10 And ligne_cible > 0 And ligne_cible <= 10 Then
@@ -137,7 +137,7 @@ Sub tour_allie()
 End Sub
 
 Sub tour_ennemi()
-'ensemble des action qui on lieu apres le tours de l'utilisateur lorsque c'est le tout de l'ennemi
+'ensemble des actions qui ont lieu après le tour de l'utilisateur lorsque c'est le tour de l'ennemi
 
     Dim reponse As String
     
@@ -215,7 +215,7 @@ End Sub
 
 
 Function test_touche() As String
-'fonction qui teste si la case ciblée par un des deux joureur correspond a celle q'un bateau ennemie si oui renvoi le nom de ce bateau si non renvois "non_touche"
+'fonction qui teste si la case ciblée par un des deux joueurs correspond à celle d'un bateau ennemi, si oui, on renvoie le nom de ce bateau si non, on renvoie "non_touche"
 'Arnaud
 
 'paramètre: "bateau_ennemi" - Prendre la plage de chaque bateau, un par un
@@ -538,7 +538,8 @@ End Sub
 
 Sub test_gagne()
 'Omar
-'
+'Compte le nombre de cellules touchées dans la grille ennemie et teste si ce nombre est égal au nombre total des cases des bateaux. Si c'est le cas, ça affiche "Partie gagnée".
+
  Dim Nb_ennemi As Integer
  Dim Nb_allier As Integer
  
@@ -567,21 +568,22 @@ Sub test_gagne()
         
                     
     End If
+    
 End Sub
 
 
 Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integer, ByVal ligne As Integer)
 'Florian
-'modifie  les carratésitique de la case ciblé pour faire comprendre au joueur si il a touché un bateu énemie, si il n'a rien touché ou si un de ces bateau à été détruit
+'Modifie les caractéristiques de la case ciblée pour faire comprendre au joueur s'il a touché un bateau ennemi,  s'il n'a rien touché ou si un ses bateaux à été détruit
 
 '-->pour le moment on se contente de changer la couleur de la case ou d'afficher une croix en l'attente de sprite
 
-'parametre : "touche" --> Si le coup n'a rien touché mettre "non_touche"
+'paramètre : "touche" --> Si le coup n'a rien touché mettre "non_touche"
 '                         Si le coup a touché, mettre le nom du bateau touché (Porte avions, Cuirassé, Contre torpilleur, Sous marin, Avion de chasse)
-'            "tour"   --> Mettre le joueur qui vien de jouer "utilisateur" ou "ordinateur"
-'            "collone"--> Numéro de la collone dans la gille de jeu qui été ciblé
-'            "ligne"  --> Numéro de la ligne dans la grille de jeu qui à été ciblé
-'sortie: modifie la couleur de la case qui as été touché
+'            "tour"   --> Mettre le joueur qui vient de jouer "utilisateur" ou "ordinateur"
+'            "collone"--> Numéro de la colonne dans la grille de jeu qui a été ciblée
+'            "ligne"  --> Numéro de la ligne dans la grille de jeu qui à été ciblée
+'sortie : modifie la couleur de la case qui a été touchée
 
     If Touche = "non_touche" Then
                                 If tour = "utilisateur" Then
@@ -604,40 +606,40 @@ Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As 
 End Sub
 
 Sub fin_partie()
-'lorsque l'un des joueurs à gangé affiche un message de fin de partie ansi que des statisique de la partie
+'lorsque l'un des joueurs à gagné, on affiche un message de fin de partie ansi que les statisiques de la partie
 
 End Sub
 
 Sub message(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integer, ByVal ligne As Integer)
 'Florian
-'fontion qui affiche un message à l'utilisatuer en fonction du coup qu'il vien de jouer ou que l'ordinateur vien de jouer
+'fonction qui affiche un message à l'utilisateur en fonction du coup qu'il vient de jouer ou que l'ordinateur vient de jouer
 'parametre : "touche" --> Si le coup n'a rien touché mettre "non_touche"
 '                         Si le coup a touché, mettre le nom du bateau touché (Porte avions, Cuirassé, Contre torpilleur, Sous marin, Avion de chasse)
-'            "tour"   --> Mettre le joueur qui vien de jouer "utilisateur" ou "ordinateur"
-'            "collone"--> Numéro de la collone dans la gille de jeu qui été ciblé
-'            "ligne"  --> Numéro de la ligne dans la grille de jeu qui à été ciblé
-'sortie : affichage d'un MsgBox correspondant a la description du tour
+'            "tour"   --> Mettre le joueur qui vient de jouer "utilisateur" ou "ordinateur"
+'            "collone"--> Numéro de la colonne dans la grille de jeu qui été ciblée
+'            "ligne"  --> Numéro de la ligne dans la grille de jeu qui à été ciblée
+'sortie : affichage d'un MsgBox correspondant à la description du tour
     Dim contenu As String
     Dim colonne_alpha As String
-    'lettre correspondant a la collone dans le grille de jeu
+    'lettre correspondant à la colonne dans le grille de jeu
     colonne_alpha = Mid(alphabet, colonne, 1)
-    If Touche = "non_touche" Then
-                                If tour = "utilisateur" Then
-                                                                contenu = colonne_alpha & ligne & " aucun bateau ennemi touché..."
+    If Touche = "non_touche" Then                            
+                               If tour = "utilisateur" Then
+                                                    contenu = colonne_alpha & ligne & " aucun bateau ennemi touché..."
                                 ElseIf tour = "ordinateur" Then
-                                                                contenu = colonne_alpha & ligne & " aucun bateau allié touché !"
+                                                    contenu = colonne_alpha & ligne & " aucun bateau allié touché !"
                                 End If
                             Else
                                 If tour = "utilisateur" Then
-                                                                contenu = colonne_alpha & ligne & " " & Touche & " " & " ennemi touché !"
+                                                    contenu = colonne_alpha & ligne & " " & Touche & " " & " ennemi touché !"
                                 ElseIf tour = "ordinateur" Then
-                                                                contenu = colonne_alpha & ligne & " " & Touche & " " & " allié touché..."
+                                                    contenu = colonne_alpha & ligne & " " & Touche & " " & " allié touché..."
                                 End If
     End If
 
 
     Call MsgBox(contenu, , "Récapitulatif du tour")
-    'MsgBox (touche & tour & collone & ligne)
+    'MsgBox (touche & tour & colonne & ligne)
 
 
 End Sub
@@ -645,8 +647,7 @@ End Sub
 
 Private Sub Worksheet_SelectionChange(ByVal Target As Range)
 'Florian
-'lorsque lorsque durant sont tours, l'utilisateur selectionne ( clique ou déplace avec les flèche directinel) une case de la carte énnemi
-'met les coordoné choisie dans deux variables "coll_cible" et "ligne_cible" et affiche a l'utilisateur la cible en I15 de manière lisible pour lui
+'lorsque durant son tour,  l'utilisateur sélectionne (clique ou déplace avec les flèche directinel) une case de la carte ennemie, on met les coordonnées choisies dans deux variables "coll_cible" et "ligne_cible" et affiche a l'utilisateur la cible en I15 de manière lisible pour lui
 
     Dim i, j As Integer
 
@@ -694,10 +695,3 @@ Sub affiche_sprite_allie(ByVal colonne As Integer, ByVal ligne As Integer, ByVal
 
 
 End Sub
-
-
-
-
-
-
-
