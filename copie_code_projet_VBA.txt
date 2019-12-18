@@ -587,11 +587,11 @@ Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As 
 
     If Touche = "non_touche" Then
                                 If tour = "utilisateur" Then
-                                                            carte_ennemi.Cells(ligne, colonne).Value = "X"
-                                                            'Call affiche_sprite_ennemie(colonne, ligne, "Case_touchée")
+                                                            'carte_ennemi.Cells(ligne, colonne).Value = "X"
+                                                            Call affiche_sprite_ennemie(colonne, ligne, "Case_touchée")
                                 ElseIf tour = "ordinateur" Then
-                                                            carte_allie.Cells(ligne, colonne).Value = "X"
-                                                            'Call affiche_sprite_allie(colonne, ligne, "Case_touchée")
+                                                            'carte_allie.Cells(ligne, colonne).Value = "X"
+                                                            Call affiche_sprite_allie(colonne, ligne, "Case_touchée")
                                 End If
                             Else
                                 If tour = "utilisateur" Then
@@ -623,7 +623,15 @@ Sub message(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integ
     Dim colonne_alpha As String
     'lettre correspondant à la colonne dans le grille de jeu
     colonne_alpha = Mid(alphabet, colonne, 1)
+<<<<<<< HEAD
+<<<<<<< HEAD
+    If Touche = "non_touche" Then
+=======
     If Touche = "non_touche" Then                            
+>>>>>>> abde159d9e8116fd70a0edd02db89314dd4a5d1b
+=======
+    If Touche = "non_touche" Then                            
+>>>>>>> abde159d9e8116fd70a0edd02db89314dd4a5d1b
                                If tour = "utilisateur" Then
                                                     contenu = colonne_alpha & ligne & " aucun bateau ennemi touché..."
                                 ElseIf tour = "ordinateur" Then
