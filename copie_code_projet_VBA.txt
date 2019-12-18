@@ -9,6 +9,8 @@ Dim p_a_allie, p_a_ennemi, c_allie, c_ennemi, c_t_allie, c_t_ennemi, s_m_allie, 
 ' a_c = avion de chasse (2 cases)
 Dim alphabet As String
 Dim bateau_touche, bateau_deja_affiche As Boolean
+Dim gagner As Boolean
+Dim perdu As Boolean
 Dim reponse As String
 
 
@@ -26,7 +28,12 @@ Sub lancer_partie()
     
 
     def_range_bateau
-
+    
+    '
+    nb_tour_allier = 1
+    gagner = False
+    perdu = False
+    
     'on met ou remmet la feuille de calcul pour etre prete à debuter une partie
     carte_allie.ClearContents
     carte_ennemi.ClearContents
@@ -561,6 +568,9 @@ Sub test_gagne()
         Next i
                     If Nb_ennemi = 17 Then
                                         MsgBox ("Vous avez gagné!")
+                                        gagner = True
+                                        Call fin_partie
+                                        
                     End If
     ElseIf tour = "ordinateur" Then
         For i = 1 To 10
@@ -572,6 +582,8 @@ Sub test_gagne()
         Next i
                     If Nb_allier = 17 Then
                                         MsgBox ("Vous avez perdu")
+                                        perdu = True
+                                        Call fin_partie
                     End If
         
                     
@@ -614,7 +626,16 @@ End Sub
 
 Sub fin_partie()
 'lorsque l'un des joueurs à gangé affiche un message de fin de partie ansi que des statisique de la partie
+Dim précision As Integer
 
+    précision = (17 / nb_tour_allier) * 100
+    If gagner = True Then
+                         MsgBox ("Détails de votre partie : C'est après " & nb_tour_allier & " tirs que vous avez réussie à détruire l'intégralité de la flotte ennemie votre précision est de " & précision & "% pas mal jeune matelot")
+    
+    
+    ElseIf perdu = True Then
+                            MsgBox ("Détails de votre partie : votre faible précision de " & précision & "% n'a pas était suffisante pour vaincre la flotte ennemie. Votre flotte a était détruitre après " & nb_tour_allier & " tours ")
+    End If
 End Sub
 
 Sub message(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integer, ByVal ligne As Integer)
@@ -717,6 +738,7 @@ Next i
 bateau_deja_affiche = False
 
 End Sub
+
 
 
 
