@@ -1,4 +1,19 @@
-﻿Dim carte_ennemi, carte_allie As Range
+﻿
+'*******************************************************
+'Nom du projet : Bataille navale
+'Role ........ : Permet à l'utilisateur de jouer au jeu de la bataille navale
+                
+'Auteur ...... : CLOAREC Florian
+'                KIENY Arnaud
+'                MARAINE Jules
+'                ESSALKI Omar
+'
+'Version ..... : V1.1 du 21/12/2019
+'Projet réalisé dans le cardre de l'UV IFA2 à l'UTBM
+'Pour commencer a jouer, cliquez sur : Lancer partie
+'********************************************************
+
+Dim carte_ennemi, carte_allie As Range
 Dim col_cible, ligne_cible, col_ordi, ligne_ordi, ligne, colonne, nombre_sprites As Integer
 Dim tour, p_a_ennemi_sens, c_ennemi_sens, c_t_ennemi_sens, s_m_ennemi_sens, a_c_ennemi_sens, p_a_allie_sens, c_allie_sens, c_t_allie_sens, s_m_allie_sens, a_c_allie_sens, bateau_sens, bateau_nom As String
 Dim p_a_allie, p_a_ennemi, c_allie, c_ennemi, c_t_allie, c_t_ennemi, s_m_allie, s_m_ennemi, a_c_allie, a_c_ennemi, bateau As Range
@@ -9,8 +24,7 @@ Dim p_a_allie, p_a_ennemi, c_allie, c_ennemi, c_t_allie, c_t_ennemi, s_m_allie, 
 ' a_c = avion de chasse (2 cases)
 Dim alphabet As String
 Dim bateau_touche, bateau_deja_affiche As Boolean
-Dim gagner As Boolean
-Dim perdu As Boolean
+Dim gagner, perdu As Boolean
 Dim reponse As String
 Dim nb_tour_allier As Integer
 
@@ -21,6 +35,9 @@ Dim nb_tour_allier As Integer
 
 Sub lancer_partie()
 'Florian
+'action qui ce passent lorsque l'utilisateur clique sur le bouton lancer partie
+'met en place la carte et affiche un message d'explication
+'si un partie à deja été faite, reinisialise tout pour lancer une nouvelle partie
 
     'initialisation des plages de cellules des cartes énnemie et alliée
     Set carte_ennemi = Range("U4:AD13")
@@ -30,7 +47,6 @@ Sub lancer_partie()
 
     def_range_bateau
     
-    '
     nb_tour_allier = 1
     gagner = False
     perdu = False
@@ -65,6 +81,7 @@ Sub lancer_partie()
     sens
     'Appel de la fonction pour connaitre le sens des bateaux
     
+    'supprime les sprite de bateau deja présent s'il y en a
     If bateau_deja_affiche = True Then
         supprime_sprite_allie
     End If
@@ -73,8 +90,8 @@ Sub lancer_partie()
     
     
 
-   MsgBox ("Sélectionner à l'aide de votre souris une case dans la carte ennemie, une fois cela fait à vos canons! Tirer en appuyant sur le bouton feu, si vous faites mouche vous en serez alors avertie par un message indiquant le bateau touché. Puis se sera au tour de votre adversaire de jouer et de tenter de toucher un de vos bateau.")
-    'régiger un message pour expliquer a l'utilisateur les regle la manière de jouer
+   MsgBox ("Sélectionnez à l'aide de votre souris une case dans la carte ennemie; une fois cela fait, à vos canons! Tirez en appuyant sur le bouton feu. Si vous faites mouche, vous en serez alors averti par un message indiquant si un bateau a été touché. Puis ce sera au tour de votre adversaire de jouer et de tenter de toucher un de vos bateaux.")
+    'Explication pour l'utilisateur
 
     tour = "utilisateur"
     'la varriable tour vaut soit "utilisateur" lorsque c'est à l'utilisateur de jouer soit "ordinateur" lorsque c'est à l'utilasateur de jouer
@@ -108,25 +125,30 @@ Sub aff_bateau()
 'Florian
 'affiche les sprite des bateau lors de l'initialisation
     
+    'porte avion
     Call affiche_sprite_allie(3, 9, "Case_gauche")
     Call affiche_sprite_allie(4, 9, "Case_H")
     Call affiche_sprite_allie(5, 9, "Case_H")
     Call affiche_sprite_allie(6, 9, "Case_H")
     Call affiche_sprite_allie(7, 9, "Case_droite")
     
+    'cuirassé
     Call affiche_sprite_allie(3, 2, "Case_haut")
     Call affiche_sprite_allie(3, 3, "Case_V")
     Call affiche_sprite_allie(3, 4, "Case_V")
     Call affiche_sprite_allie(3, 5, "Case_bas")
     
+    'contre torpilleur
     Call affiche_sprite_allie(8, 5, "Case_haut")
     Call affiche_sprite_allie(8, 6, "Case_V")
     Call affiche_sprite_allie(8, 7, "Case_bas")
     
+    'sous-marin
     Call affiche_sprite_allie(6, 3, "Case_gauche")
     Call affiche_sprite_allie(7, 3, "Case_H")
     Call affiche_sprite_allie(8, 3, "Case_droite")
     
+    'avion de chasse
     Call affiche_sprite_allie(1, 7, "Case_haut")
     Call affiche_sprite_allie(1, 8, "Case_bas")
 
@@ -135,39 +157,40 @@ Sub aff_bateau()
 End Sub
 
 Sub tour_allie()
-'ensemble des action qui on lieu lorsque durant sont tours l'utilisateur clique sur le bouton "Feu!"
+'Florian
+'ensemble des action qui on lieu lorsque durant son tours l'utilisateur clique sur le bouton "Feu!"
     
-    
-    If col_cible > 0 And col_cible <= 10 And ligne_cible > 0 And ligne_cible <= 10 Then
-        reponse = test_touche()
-        Call message(reponse, tour, col_cible, ligne_cible)
-        Call modifie_case(reponse, tour, col_cible, ligne_cible)
-        Call test_detruit
-        Call test_gagne
-        tour = "ordinateur"
-        Call tour_ennemi
-        nb_tour_allier = nb_tour_allier + 1
-    Else
-        MsgBox ("Veuillez sélectionner une case valide")
-    
+    If tour = "utilisateur" Then
+        If col_cible > 0 And col_cible <= 10 And ligne_cible > 0 And ligne_cible <= 10 Then
+        'on verrifie que les variable aient bien des valeur conforme
+            reponse = test_touche()
+            Call modifie_case(reponse, tour, col_cible, ligne_cible)
+            Call message(reponse, tour, col_cible, ligne_cible)
+            Call test_detruit
+            Call test_gagne
+            tour = "ordinateur"
+            Call tour_ennemi
+            nb_tour_allier = nb_tour_allier + 1
+        Else
+            MsgBox ("Veuillez sélectionner une case valide")
+        
+        End If
     End If
     
 End Sub
 
 Sub tour_ennemi()
+'Florian
 'ensemble des action qui on lieu apres le tours de l'utilisateur lorsque c'est le tout de l'ennemi
-
-    Dim reponse As String
-    
-    
     
     Randomize
     col_cible = Int(10 * Rnd) + 1
     ligne_cible = Int(10 * Rnd) + 1
+    'les variable prennent comme valeur un nombre aléatoire entre 1 et 10
     
     reponse = test_touche()
-    Call message(reponse, tour, col_cible, ligne_cible)
     Call modifie_case(reponse, tour, col_cible, ligne_cible)
+    Call message(reponse, tour, col_cible, ligne_cible)
     Call test_detruit
     Call test_gagne
     tour = "utilisateur"
@@ -342,7 +365,8 @@ End Function
 
 Sub test_detruit()
 'Jules
-'lorsque un bateau est touché, je teste si ce bateau est détruit
+'lorsque un bateau est touché, on teste si ce bateau est détruit
+'lorsqu'un bateau est détruis affiche le sprite de bateau détruit
 
 
     If tour = "utilisateur" Then
@@ -608,7 +632,8 @@ End Sub
 
 Sub test_gagne()
 'Omar
-'
+'teste si la partie est gagnée
+
  Dim Nb_ennemi As Integer
  Dim Nb_allier As Integer
  
@@ -620,12 +645,13 @@ Sub test_gagne()
                 End If
             Next j
         Next i
-                    If Nb_ennemi = 17 Then
-                                        MsgBox ("Vous avez gagné!")
-                                        gagner = True
-                                        Call fin_partie
-                                        
-                    End If
+        
+        If Nb_ennemi = 17 Then
+                            MsgBox ("Vous avez gagné!")
+                            gagner = True
+                            Call fin_partie
+        End If
+                    
     ElseIf tour = "ordinateur" Then
         For i = 1 To 10
             For j = 1 To 10
@@ -634,11 +660,12 @@ Sub test_gagne()
                 End If
             Next j
         Next i
-                    If Nb_allier = 17 Then
-                                        MsgBox ("Vous avez perdu")
-                                        perdu = True
-                                        Call fin_partie
-                    End If
+        
+        If Nb_allier = 17 Then
+                            MsgBox ("Vous avez perdu...")
+                            perdu = True
+                            Call fin_partie
+        End If
         
                     
     End If
@@ -649,7 +676,6 @@ Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As 
 'Florian
 'modifie  les carratésitique de la case ciblé pour faire comprendre au joueur si il a touché un bateu énemie, si il n'a rien touché ou si un de ces bateau à été détruit
 
-'-->pour le moment on se contente de changer la couleur de la case ou d'afficher une croix en l'attente de sprite
 
 'parametre : "touche" --> Si le coup n'a rien touché mettre "non_touche"
 '                         Si le coup a touché, mettre le nom du bateau touché (Porte avions, Cuirassé, Contre torpilleur, Sous marin, Avion de chasse)
@@ -679,16 +705,17 @@ Sub modifie_case(ByVal Touche As String, ByVal tour As String, ByVal colonne As 
 End Sub
 
 Sub fin_partie()
+'Omar
 'lorsque l'un des joueurs à gangé affiche un message de fin de partie ansi que des statisique de la partie
 Dim précision As Integer
 
     précision = (17 / nb_tour_allier) * 100
     If gagner = True Then
-                         MsgBox ("Détails de votre partie : C'est après " & nb_tour_allier & " tirs que vous avez réussie à détruire l'intégralité de la flotte ennemie votre précision est de " & précision & "% pas mal jeune matelot")
+                         MsgBox ("Détails de votre partie : c'est après " & nb_tour_allier & " tirs que vous avez réussi à détruire l'intégralité de la flotte ennemie; votre précision est de " & précision & "% : pas mal jeune matelot")
     
     
     ElseIf perdu = True Then
-                            MsgBox ("Détails de votre partie : votre faible précision de " & précision & "% n'a pas était suffisante pour vaincre la flotte ennemie. Votre flotte a était détruitre après " & nb_tour_allier & " tours ")
+                            MsgBox ("Détails de votre partie : votre faible précision de " & précision & "% n'a pas été suffisante pour vaincre la flotte ennemie. Votre flotte a été détruite après " & nb_tour_allier & " tours ")
     End If
 End Sub
 
@@ -721,7 +748,7 @@ Sub message(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integ
 
 
     Call MsgBox(contenu, , "Récapitulatif du tour")
-    'MsgBox (touche & tour & collone & ligne)
+    'affiche le message adapté
 
 
 End Sub
@@ -729,8 +756,8 @@ End Sub
 
 Private Sub Worksheet_SelectionChange(ByVal Target As Range)
 'Florian
-'lorsque lorsque durant sont tours, l'utilisateur selectionne ( clique ou déplace avec les flèche directinel) une case de la carte énnemi
-'met les coordoné choisie dans deux variables "coll_cible" et "ligne_cible" et affiche a l'utilisateur la cible en I15 de manière lisible pour lui
+'lorsque lorsque durant son tours, l'utilisateur selectionne ( clique ou déplace avec les flèche directinel) une case de la carte énnemi
+'met les coordonnées choisies dans deux variables "coll_cible" et "ligne_cible" et affiche a l'utilisateur la cible en I15 de manière lisible pour lui
 
     Dim i, j As Integer
 
@@ -738,6 +765,7 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         For i = 1 To 10
             For j = 1 To 10
                 If Target.Address = carte_ennemi.Cells(i, j).Address Then
+                'teste pour chaque cellule si sont addresse est la meme que celle qui est selectionnée
                     col_cible = j
                     ligne_cible = i
                 End If
@@ -747,6 +775,7 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         
         If IsNumeric(col_cible) And IsNumeric(ligne_cible) And col_clible <= 10 And col_cible > 0 Then
             Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
+            'affiche la cible de manière lisible pour l'utilisateur exemple H3
         End If
     End If
 End Sub
@@ -755,12 +784,12 @@ Sub affiche_sprite_ennemie(ByVal colonne As Integer, ByVal ligne As Integer, ByV
 'Florian
 'affiche l'image dont le nom est "image" dans la cellule "ligne" "colonne" de la carte ennemie
 
-    ActiveSheet.Shapes.Range(Array(image)).Select
-    Selection.Copy
-    carte_ennemi.Cells(ligne, colonne).Select
-    ActiveSheet.Paste
-    Selection.ShapeRange.Name = "partie_carte_allie"
-    Selection.ShapeRange.ZOrder msoSendToBack
+    ActiveSheet.Shapes.Range(Array(image)).Select 'selectionne l'image dont le nom vaut image
+    Selection.Copy 'la copie
+    carte_ennemi.Cells(ligne, colonne).Select 'selectionne la cellue a modifier
+    ActiveSheet.Paste 'colle l'image dans cette cellule
+    Selection.ShapeRange.Name = "partie_carte_allie" 'modifie le nom de l'image pour parmetre de la suprimer par la suite
+    Selection.ShapeRange.ZOrder msoSendToBack 'met en arrière plan
     Range("A1").Select
     nombre_sprites = nombre_sprites + 1
 
@@ -784,6 +813,8 @@ Sub affiche_sprite_allie(ByVal colonne As Integer, ByVal ligne As Integer, ByVal
 End Sub
 
 Sub supprime_sprite_allie()
+'Arnaud
+'suprime tout les sprites qui on été affiché au cour de la partie
 
 For i = 1 To (nombre_sprites)
 
