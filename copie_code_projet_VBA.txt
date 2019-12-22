@@ -1,16 +1,16 @@
 
 '*******************************************************
 'Nom du projet : Bataille navale
-'Role ........ : Permet à l'utilisateur de jouer au jeu de la bataille navale
+'Role ........ : Permet à l'utilisateur de jouer au jeu de la bataille navale.
                 
 'Auteur ...... : CLOAREC Florian
-'                     KIENY Arnaud
-'                     MARAINE Jules
-'                     ESSALKI Omar
+'                KIENY Arnaud
+'                MARAINE Jules
+'                ESSALKI Omar
 '
 'Version ..... : V1.1 du 21/12/2019
-'Projet réalisé dans le cardre de l'UV IFA2 à l'UTBM
-'Pour commencer a jouer, cliquez sur : Lancer partie
+'Projet réalisé dans le cadre de l'UV IFA2 à l'UTBM
+'Pour commencer a jouer, cliquez sur : "Lancer partie".
 '********************************************************
 
 Dim carte_ennemi, carte_allie As Range
