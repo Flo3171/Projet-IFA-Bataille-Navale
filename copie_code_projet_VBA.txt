@@ -1,12 +1,12 @@
-﻿
+
 '*******************************************************
 'Nom du projet : Bataille navale
 'Role ........ : Permet à l'utilisateur de jouer au jeu de la bataille navale
                 
 'Auteur ...... : CLOAREC Florian
-'                KIENY Arnaud
-'                MARAINE Jules
-'                ESSALKI Omar
+'                     KIENY Arnaud
+'                     MARAINE Jules
+'                     ESSALKI Omar
 '
 'Version ..... : V1.1 du 21/12/2019
 'Projet réalisé dans le cardre de l'UV IFA2 à l'UTBM
@@ -29,17 +29,13 @@ Dim reponse As String
 Dim nb_tour_allier As Integer
 
 
-
-
-
-
 Sub lancer_partie()
 'Florian
-'action qui ce passent lorsque l'utilisateur clique sur le bouton lancer partie
-'met en place la carte et affiche un message d'explication
-'si un partie à deja été faite, reinisialise tout pour lancer une nouvelle partie
+'Action qui se passe lorsque l'utilisateur clique sur le bouton lancer partie.
+'Met en place la carte et affiche un message d'explication.
+'Si une partie à deja été faite, réinitialise tout pour lancer une nouvelle partie.
 
-    'initialisation des plages de cellules des cartes énnemie et alliée
+    'initialisation des plages de cellules des cartes "ennemie" et "alliée".
     Set carte_ennemi = Range("U4:AD13")
     Set carte_allie = Range("E4:N13")
     alphabet = "ABCDEFGHIJ"
@@ -51,7 +47,7 @@ Sub lancer_partie()
     gagner = False
     perdu = False
     
-    'on met ou remmet la feuille de calcul pour etre prete à debuter une partie
+    'On met ou remet la feuille de calcul pour être prêt à débuter une partie.
     carte_allie.ClearContents
     carte_ennemi.ClearContents
     
@@ -79,9 +75,9 @@ Sub lancer_partie()
     
     
     sens
-    'Appel de la fonction pour connaitre le sens des bateaux
+    'Appel de la fonction pour connaitre le sens des bateaux.
     
-    'supprime les sprite de bateau deja présent s'il y en a
+    'Supprime les sprites de bateaux déjà présens s'il y en a.
     If bateau_deja_affiche = True Then
         supprime_sprite_allie
     End If
@@ -91,27 +87,27 @@ Sub lancer_partie()
     
 
    MsgBox ("Sélectionnez à l'aide de votre souris une case dans la carte ennemie; une fois cela fait, à vos canons! Tirez en appuyant sur le bouton feu. Si vous faites mouche, vous en serez alors averti par un message indiquant si un bateau a été touché. Puis ce sera au tour de votre adversaire de jouer et de tenter de toucher un de vos bateaux.")
-    'Explication pour l'utilisateur
+    'Explication pour l'utilisateur.
 
     tour = "utilisateur"
-    'la varriable tour vaut soit "utilisateur" lorsque c'est à l'utilisateur de jouer soit "ordinateur" lorsque c'est à l'utilasateur de jouer
-    '--> !!! elle n'est initialisé que lorsque l'utilisateur lance une partie en cliquant sur la bouton donc tant que cette variable ne vaut pas "utilisateur" ou "ordinateur il ne doit rien ce passer sur VBA !
+    'La variable tour vaut soit "utilisateur" lorsque c'est à l'utilisateur de jouer soit "ordinateur" lorsque c'est à l'ordinateur de jouer.
+    '--> !!! Elle n'est initialisé que lorsque l'utilisateur lance une partie en cliquant sur le bouton. Donc tant que cette variable ne vaut pas "utilisateur" ou "ordinateur",  il ne doit rien se passer sur VBA !
 
 
 End Sub
 
 Sub def_range_bateau()
 'Florian
-'place dans différentes range les positions de chaques bateaux sur la feuille de travail
+'Place dans différentes ranges les positions de chaque bateaux sur la feuille de travail.
 
-    'initialisation des plages de cellules de chaque bateau allie
+    'Initialisation des plages de cellules de chaque bateau allié.
     Set p_a_allie = Range("G12:K12")
     Set c_allie = Range("G5:G8")
     Set c_t_allie = Range("L8:L10")
     Set s_m_allie = Range("J6:L6")
     Set a_c_allie = Range("E10:E11")
 
-    'initialisation des plages de cellules de chaque bateau ennemie
+    'Initialisation des plages de cellules de chaque bateau ennemi.
     Set p_a_ennemi = Range("X7:X11")
     Set c_ennemi = Range("AC7:AC10")
     Set c_t_ennemi = Range("AB5:AD5")
@@ -123,7 +119,7 @@ End Sub
 
 Sub aff_bateau()
 'Florian
-'affiche les sprite des bateau lors de l'initialisation
+'Affiche les sprites des bateaux lors de l'initialisation.
     
     'porte avion
     Call affiche_sprite_allie(3, 9, "Case_gauche")
@@ -158,11 +154,11 @@ End Sub
 
 Sub tour_allie()
 'Florian
-'ensemble des action qui on lieu lorsque durant son tours l'utilisateur clique sur le bouton "Feu!"
+'Ensemble des actions qui ont lieu lorsque durant son tour, l'utilisateur clique sur le bouton "Feu!".
     
     If tour = "utilisateur" Then
         If col_cible > 0 And col_cible <= 10 And ligne_cible > 0 And ligne_cible <= 10 Then
-        'on verrifie que les variable aient bien des valeur conforme
+        'On vérifie que les variables aient bien des valeurs conformes.
             reponse = test_touche()
             Call modifie_case(reponse, tour, col_cible, ligne_cible)
             Call message(reponse, tour, col_cible, ligne_cible)
@@ -181,12 +177,12 @@ End Sub
 
 Sub tour_ennemi()
 'Florian
-'ensemble des action qui on lieu apres le tours de l'utilisateur lorsque c'est le tout de l'ennemi
+'Ensemble des actions qui ont lieu après le tour de l'utilisateur lorsque c'est le tour de l'ennemi.
     
     Randomize
     col_cible = Int(10 * Rnd) + 1
     ligne_cible = Int(10 * Rnd) + 1
-    'les variable prennent comme valeur un nombre aléatoire entre 1 et 10
+    'Les variables prennent comme valeur un nombre aléatoire entre 1 et 10.
     
     reponse = test_touche()
     Call modifie_case(reponse, tour, col_cible, ligne_cible)
@@ -201,12 +197,12 @@ Sub sens()
 'Renvoie le sens des bateaux ("H" horizontal et "V" vertical)
 'Arnaud
 'Paramètres: "tour" - tour du joueur ou de l'ordinateur
-'            "nom-bateau_ennemi/allie" - Plage des bateaux concernés
+'            "nom-bateau_ennemi/allie" - Plage des bateaux concernés.
 'Sortie: "bateau_sens" - "V" s'il est sur la verticale, "H" pour l'horizontale
 
-'Méthode: Compter le nombre de colonnes concernées par chaque bateau, s'il n'y en a qu'une, c'est qu'il est placé à la verticale, sinon à l'horizontale
+'Méthode : Compter le nombre de colonnes concernées par chaque bateau,  s'il n'y en a qu'une,  c'est qu'il est placé à la verticale , sinon à l'horizontale.
 
-'Initialisation: Premier bateau
+'Initialisation : Premier bateau
 Set bateau = p_a_ennemi
 
 For i = 1 To 10
@@ -256,24 +252,24 @@ End Sub
 
 
 Function test_touche() As String
-'fonction qui teste si la case ciblée par un des deux joureur correspond a celle q'un bateau ennemie si oui renvoi le nom de ce bateau si non renvois "non_touche"
+'Fonction qui teste si la case ciblée par un des deux joueurs correspond à celle d'un bateau ennemi,  si oui renvoie le nom de ce bateau si non renvoie "non_touche".
 'Arnaud
 
-'paramètre: "bateau_ennemi" - Prendre la plage de chaque bateau, un par un
-'           "bateau_ennemi_sens" - Prendre le sens de chaque bateau, un par un
-'           "bateau_nom" - Donner le nom du bateau touché
-'           "bateau_touche" - Renvoie si un bateau a été touché
-'           "tour" - Vérifier qu'il s'agisse du tour du joueur ou de l'ordinateur
-'           "ligne_cible" - Ligne visée
-'           "col_cible" - Colonne visée
-'Sortie: donne les coordonnées si bateau touché
-'(Prérequis: avoir lancé la fonction sens au moins une fois avant)
+'Paramètre:  "bateau_ennemi" - Prendre la plage de chaque bateau, un par un.
+'           "bateau_ennemi_sens" - Prendre le sens de chaque bateau, un par un.
+'           "bateau_nom" - Donner le nom du bateau touché.
+'           "bateau_touche" - Renvoie si un bateau a été touché.
+'           "tour" - Vérifier qu'il s'agisse du tour du joueur ou de l'ordinateur.
+'           "ligne_cible" - Ligne visée.
+'           "col_cible" - Colonne visée.
+'Sortie: donne les coordonnées si bateau touché.
+'(Prérequis : avoir lancé la fonction sens au moins une fois avant)
 
-    'Réinitialisation de la variable en début de test
+    'Réinitialisation de la variable en début de tes.t
     bateau_touche = False
     test_touche = "non_touche"
 
-    'Initialisation: premier bateau
+    'Initialisation : premier bateau
     If tour = "utilisateur" Then
         Set bateau = p_a_ennemi
         bateau_sens = p_a_ennemi_sens
@@ -290,8 +286,8 @@ Function test_touche() As String
     
                 If tour = "utilisateur" Then
     
-    'En fonction du sens, on vérifie la plage de chaque bateau à la verticale ou l'horizontale
-    'On compare avec la case ciblée
+    'En fonction du sens, on vérifie la plage de chaque bateau à la verticale ou l'horizontale.
+    'On compare avec la case ciblée.
 
                         If bateau.Cells(j).Address = carte_ennemi.Cells(ligne_cible, col_cible).Address Then
                             ligne = ligne_cible
@@ -316,7 +312,7 @@ Function test_touche() As String
            
             Next j
     
-    'On change de bateau à vérifier en fonction du tour
+    'On change de bateau à vérifier en fonction du tour.
           
           If tour = "utilisateur" Then
             If i = 4 Then
@@ -365,9 +361,8 @@ End Function
 
 Sub test_detruit()
 'Jules
-'lorsque un bateau est touché, on teste si ce bateau est détruit
-'lorsqu'un bateau est détruis affiche le sprite de bateau détruit
-
+'Lorsque un bateau est touché, on teste si ce bateau est détruit.
+'Lorsqu'un bateau est détruit, on affiche le sprite de bateau détruit.
 
     If tour = "utilisateur" Then
         
@@ -721,16 +716,16 @@ End Sub
 
 Sub message(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integer, ByVal ligne As Integer)
 'Florian
-'fontion qui affiche un message à l'utilisatuer en fonction du coup qu'il vien de jouer ou que l'ordinateur vien de jouer
-'parametre : "touche" --> Si le coup n'a rien touché mettre "non_touche"
+'Fonction qui affiche un message à l'utilisateur en fonction du coup qu'il vient de jouer ou que l'ordinateur vient de jouer.
+'Paramètre : "touche" --> Si le coup n'a rien touché mettre "non_touche".
 '                         Si le coup a touché, mettre le nom du bateau touché (Porte avions, Cuirassé, Contre torpilleur, Sous marin, Avion de chasse)
-'            "tour"   --> Mettre le joueur qui vien de jouer "utilisateur" ou "ordinateur"
-'            "collone"--> Numéro de la collone dans la gille de jeu qui été ciblé
-'            "ligne"  --> Numéro de la ligne dans la grille de jeu qui à été ciblé
-'sortie : affichage d'un MsgBox correspondant a la description du tour
+'            "tour"   --> Mettre le joueur qui vient de jouer "utilisateur" ou "ordinateur".
+'            "collone"--> Numéro de la colonne dans la grille de jeu qui été cibleé.
+'            "ligne"  --> Numéro de la ligne dans la grille de jeu qui à été ciblée.
+'Sortie : affichage d'un MsgBox correspondant à la description du tour.
     Dim contenu As String
     Dim colonne_alpha As String
-    'lettre correspondant a la collone dans le grille de jeu
+    'Lettre correspondant à la colonne dans le grille de jeu.
     colonne_alpha = Mid(alphabet, colonne, 1)
     If Touche = "non_touche" Then
                                 If tour = "utilisateur" Then
@@ -748,7 +743,7 @@ Sub message(ByVal Touche As String, ByVal tour As String, ByVal colonne As Integ
 
 
     Call MsgBox(contenu, , "Récapitulatif du tour")
-    'affiche le message adapté
+    'Affiche le message adapté.
 
 
 End Sub
@@ -756,8 +751,8 @@ End Sub
 
 Private Sub Worksheet_SelectionChange(ByVal Target As Range)
 'Florian
-'lorsque lorsque durant son tours, l'utilisateur selectionne ( clique ou déplace avec les flèche directinel) une case de la carte énnemi
-'met les coordonnées choisies dans deux variables "coll_cible" et "ligne_cible" et affiche a l'utilisateur la cible en I15 de manière lisible pour lui
+'Lorsque, durant son tour, l'utilisateur selectionne (En cliquant ou déplaçant avec les flèches directionnelles) une case de la carte ennemie.
+'Met les coordonnées choisies dans deux variables "coll_cible" et "ligne_cible" et affiche a l'utilisateur la cible en I15 de manière lisible pour lui.
 
     Dim i, j As Integer
 
@@ -765,7 +760,7 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         For i = 1 To 10
             For j = 1 To 10
                 If Target.Address = carte_ennemi.Cells(i, j).Address Then
-                'teste pour chaque cellule si sont addresse est la meme que celle qui est selectionnée
+                'Test pour chaque cellule si son adresse est la même que celle qui est selectionnée.
                     col_cible = j
                     ligne_cible = i
                 End If
@@ -775,21 +770,21 @@ Private Sub Worksheet_SelectionChange(ByVal Target As Range)
         
         If IsNumeric(col_cible) And IsNumeric(ligne_cible) And col_clible <= 10 And col_cible > 0 Then
             Range("I15").Value = Mid(alphabet, col_cible, 1) & " " & ligne_cible
-            'affiche la cible de manière lisible pour l'utilisateur exemple H3
+            'Affiche la cible de manière lisible pour l'utilisateur exemple H3.
         End If
     End If
 End Sub
 
 Sub affiche_sprite_ennemie(ByVal colonne As Integer, ByVal ligne As Integer, ByVal image As String)
 'Florian
-'affiche l'image dont le nom est "image" dans la cellule "ligne" "colonne" de la carte ennemie
+'Affiche l'image dont le nom est "image" dans la cellule "ligne" "colonne" de la carte ennemie.
 
-    ActiveSheet.Shapes.Range(Array(image)).Select 'selectionne l'image dont le nom vaut image
-    Selection.Copy 'la copie
-    carte_ennemi.Cells(ligne, colonne).Select 'selectionne la cellue a modifier
-    ActiveSheet.Paste 'colle l'image dans cette cellule
-    Selection.ShapeRange.Name = "partie_carte_allie" 'modifie le nom de l'image pour parmetre de la suprimer par la suite
-    Selection.ShapeRange.ZOrder msoSendToBack 'met en arrière plan
+    ActiveSheet.Shapes.Range(Array(image)).Select 'Sélectionne l'image dont le nom vaut image.
+    Selection.Copy 'La copie.
+    carte_ennemi.Cells(ligne, colonne).Select 'Sélectionne la cellue à modifier.
+    ActiveSheet.Paste 'Colle l'image dans cette cellule.
+    Selection.ShapeRange.Name = "partie_carte_allie" 'Modifie le nom de l'image pour permettre de la supprimer par la suite.
+    Selection.ShapeRange.ZOrder msoSendToBack 'Met en arrière plan.
     Range("A1").Select
     nombre_sprites = nombre_sprites + 1
 
@@ -798,7 +793,7 @@ End Sub
 
 Sub affiche_sprite_allie(ByVal colonne As Integer, ByVal ligne As Integer, ByVal image As String)
 'Florian
-'affiche l'image dont le nom est "image" dans la cellule "ligne" "colonne" de la carte allié
+'Affiche l'image dont le nom est "image" dans la cellule "ligne" "colonne" de la carte alliée.
 
     ActiveSheet.Shapes.Range(Array(image)).Select
     Selection.Copy
@@ -814,7 +809,7 @@ End Sub
 
 Sub supprime_sprite_allie()
 'Arnaud
-'suprime tout les sprites qui on été affiché au cour de la partie
+'Supprime tous les sprites qui ont été affichés au cour de la partie.
 
 For i = 1 To (nombre_sprites)
 
@@ -826,6 +821,11 @@ Next i
 bateau_deja_affiche = False
 
 End Sub
+
+
+
+
+
 
 
 
