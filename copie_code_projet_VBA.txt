@@ -31,7 +31,7 @@ Dim nb_tour_allier As Integer
 
 Sub lancer_partie()
 'Florian
-'Action qui se passe lorsque l'utilisateur clique sur le bouton lancer partie.
+'Actions qui se passent lorsque l'utilisateur clique sur le bouton lancer partie.
 'Met en place la carte et affiche un message d'explication.
 'Si une partie à deja été faite, réinitialise tout pour lancer une nouvelle partie.
 
@@ -86,8 +86,8 @@ Sub lancer_partie()
     
     
 
-   MsgBox ("Sélectionnez à l'aide de votre souris une case dans la carte ennemie; une fois cela fait, à vos canons! Tirez en appuyant sur le bouton feu. Si vous faites mouche, vous en serez alors averti par un message indiquant si un bateau a été touché. Puis ce sera au tour de votre adversaire de jouer et de tenter de toucher un de vos bateaux.")
-    'Explication pour l'utilisateur.
+   MsgBox "Sélectionnez à l'aide de votre souris une case dans la carte ennemie; une fois cela fait, à vos canons! Tirez en appuyant sur le bouton feu. Si vous faites mouche, vous en serez alors averti par un message indiquant si un bateau a été touché. Puis se sera au tour de votre adversaire de jouer et de tenter de toucher un de vos bateaux.", Title:="Explications"
+    'Explications pour l'utilisateur.
 
     tour = "utilisateur"
     'La variable tour vaut soit "utilisateur" lorsque c'est à l'utilisateur de jouer soit "ordinateur" lorsque c'est à l'ordinateur de jouer.
@@ -627,7 +627,7 @@ End Sub
 
 Sub test_gagne()
 'Omar
-'teste si la partie est gagnée
+'test si la partie est gagnée ou perdue
 
  Dim Nb_ennemi As Integer
  Dim Nb_allier As Integer
@@ -635,14 +635,15 @@ Sub test_gagne()
     If tour = "utilisateur" Then
         For i = 1 To 10
             For j = 1 To 10
+'On test les cases des bateaux si la case a pour valeur un espace alors cela signifie qu'elle a était touché (ceci a était définie dans un sub précédent)
                 If carte_ennemi.Cells(i, j).Value = " " Then
                                                         Nb_ennemi = Nb_ennemi + 1
                 End If
             Next j
         Next i
-        
+'sachant que la totalité des bateaux est composé de 17 cases arrivé à 17 la partie est gagné
         If Nb_ennemi = 17 Then
-                            MsgBox ("Vous avez gagné!")
+                            MsgBox "Vous avez gagné!", Title:="Bataille navale"
                             gagner = True
                             Call fin_partie
         End If
@@ -657,7 +658,7 @@ Sub test_gagne()
         Next i
         
         If Nb_allier = 17 Then
-                            MsgBox ("Vous avez perdu...")
+                            MsgBox "Vous avez perdu...", Title:="Bataille navale"
                             perdu = True
                             Call fin_partie
         End If
@@ -701,16 +702,19 @@ End Sub
 
 Sub fin_partie()
 'Omar
-'lorsque l'un des joueurs à gangé affiche un message de fin de partie ansi que des statisique de la partie
-Dim précision As Integer
+'lorsque l'un des joueurs a gagné affiche un message de fin de partie ansi que des statisiques de la partie
 
+Dim précision As Integer
+'on calcul la précison du joueur séparement (nombre de cases a toucher diviser par le nombre de tirs)
     précision = (17 / nb_tour_allier) * 100
+
+'grace aux variables gagner et perdu du module test gagne on adapte le message de fin
     If gagner = True Then
-                         MsgBox ("Détails de votre partie : c'est après " & nb_tour_allier & " tirs que vous avez réussi à détruire l'intégralité de la flotte ennemie; votre précision est de " & précision & "% : pas mal jeune matelot")
+                         MsgBox "Détails de votre partie : c'est après " & nb_tour_allier & " tirs que vous avez réussi à détruire l'intégralité de la flotte ennemie; votre précision est de " & précision & "% : pas mal jeune matelot", Title:="Bataille navale"
     
     
     ElseIf perdu = True Then
-                            MsgBox ("Détails de votre partie : votre faible précision de " & précision & "% n'a pas été suffisante pour vaincre la flotte ennemie. Votre flotte a été détruite après " & nb_tour_allier & " tours ")
+                            MsgBox "Détails de votre partie : votre faible précision de " & précision & "% n'a pas été suffisante pour vaincre la flotte ennemie. Votre flotte a été détruite après " & nb_tour_allier & " tours ", Title:="Bataille navale"
     End If
 End Sub
 
@@ -821,6 +825,7 @@ Next i
 bateau_deja_affiche = False
 
 End Sub
+
 
 
 
